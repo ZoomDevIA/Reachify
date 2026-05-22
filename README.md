@@ -53,6 +53,176 @@ Essa decisão vale, neste momento, para:
 - Prompts, tools, regras de negócio e logs de execução devem ser pensados para agentes multiempresa.
 - Fluxos sensíveis, como cobrança automática, devem usar regras explícitas e trilha de auditoria.
 
+## Como Funcionará a Criação de Agentes
+
+No Reachify, cada empresa poderá criar, configurar e gerenciar seus próprios agentes de atendimento conforme sua operação, setor, tom de voz e regras comerciais.
+
+O objetivo é permitir que o usuário monte agentes especializados para diferentes contextos, como:
+
+- vendas;
+- pré-atendimento;
+- suporte;
+- cobrança;
+- qualificação de leads;
+- recuperação de clientes;
+- atendimento técnico;
+- setores específicos, como cibersegurança, saúde, educação, serviços ou varejo.
+
+### Observação importante
+
+A divisão em vários agentes será **opcional**.
+
+Se o usuário quiser operar com **apenas um único agente**, isso também deverá ser suportado pelo sistema. Nesse caso, um único agente poderá concentrar várias funções ao mesmo tempo, como:
+
+- atendimento inicial;
+- resposta comercial;
+- qualificação de leads;
+- suporte básico;
+- cobrança;
+- transferência para humano quando necessário.
+
+Ou seja, o Reachify deve permitir tanto:
+
+- um único agente geral para fazer todo o atendimento;
+- quanto vários agentes separados por setor, objetivo, canal ou etapa da operação.
+
+### Estrutura base de cada agente
+
+Cada agente deverá possuir uma configuração própria no sistema.
+
+#### 1. Nome do agente
+
+Identifica o agente dentro da operação da empresa.
+
+**Exemplo**
+
+- `Agente Cibersegurança`
+- `Agente Cobrança`
+- `Agente Pré-vendas`
+
+#### 2. Objetivo do agente
+
+Define com clareza o que aquele agente deve fazer.
+
+**Exemplo**
+
+- vender produtos de cibersegurança;
+- responder dúvidas comerciais;
+- cobrar clientes inadimplentes;
+- qualificar leads antes de transferir ao time humano.
+
+#### 3. Base de conhecimento
+
+Cada agente poderá utilizar uma base de conhecimento própria para responder, orientar ou vender com mais precisão.
+
+**Fontes previstas**
+
+- PDFs;
+- textos;
+- links;
+- FAQs;
+- catálogo de produtos;
+- políticas comerciais;
+- scripts internos;
+- documentos institucionais.
+
+#### 4. Tom de atendimento
+
+O usuário poderá definir como o agente deve se comunicar.
+
+**Exemplos**
+
+- formal;
+- consultivo;
+- direto;
+- técnico;
+- amigável;
+- comercial;
+- acolhedor.
+
+#### 5. Regras do agente
+
+Cada agente poderá seguir regras específicas de negócio e comportamento.
+
+**Exemplos**
+
+- `Não oferecer desconto acima de 10%.`
+- `Sempre coletar nome, telefone e e-mail.`
+- `Se o cliente pedir proposta, transferir para humano.`
+- `Não confirmar prazos sem consultar a política comercial.`
+- `Encerrar atendimento de cobrança com link de pagamento quando disponível.`
+
+#### 6. Canal de atuação
+
+O agente poderá ser configurado para atuar em canais específicos da operação.
+
+**Canais previstos**
+
+- WhatsApp;
+- e-mail;
+- site;
+- formulário;
+- CRM.
+
+#### 7. Gatilhos de ativação
+
+O agente poderá ser ativado por palavras-chave, categorias, origem do contato ou contexto da conversa.
+
+**Exemplos**
+
+- palavras como `preço`, `orçamento`, `proposta`;
+- intenção identificada como `cobrança`;
+- lead vindo de formulário comercial;
+- cliente entrando em uma fila específica do atendimento.
+
+## Gestão dos Agentes pelo Usuário
+
+O Reachify será pensado para que o próprio usuário da plataforma consiga configurar seus agentes com autonomia, sem depender do time técnico para cada ajuste operacional.
+
+### O que o usuário poderá gerenciar
+
+- nome e descrição do agente;
+- objetivo principal;
+- setor ou tipo de atendimento;
+- base de conhecimento;
+- estilo de comunicação;
+- regras e limitações;
+- canal onde o agente atua;
+- gatilhos de ativação;
+- momento de transferir para humano;
+- mensagens iniciais e instruções operacionais.
+
+### Visão de produto
+
+Na prática, isso significa que uma mesma empresa poderá escolher entre dois modelos:
+
+- operar com um único agente central;
+- operar com vários agentes especializados.
+
+#### Exemplo com um único agente
+
+- um agente geral que atende, responde dúvidas, qualifica leads, envia cobranças e transfere para humano quando necessário.
+
+#### Exemplo com vários agentes
+
+- um agente comercial para captar leads;
+- um agente de cobrança para inadimplência;
+- um agente de suporte para perguntas frequentes;
+- um agente técnico para linhas de produto específicas.
+
+Quando houver mais de um agente, cada um deles terá comportamento, objetivo, conhecimento e regras próprias.
+
+### Diretriz para o time de desenvolvimento
+
+- O sistema deve permitir um único agente por empresa ou múltiplos agentes por empresa.
+- A divisão por setores ou tipos de atendimento deve ser opcional.
+- Cada agente deve possuir configuração isolada.
+- A base de conhecimento deve ser vinculada por agente.
+- Regras e instruções devem ser persistidas de forma estruturada.
+- O fluxo deve permitir ativação por canal, gatilho e contexto.
+- Deve existir possibilidade de transferência para atendimento humano.
+- A modelagem precisa suportar futura expansão para agentes mais complexos, com ferramentas, memória e automações por etapa.
+
 ## Serviços de Terceiros Oficiais do Projeto
 
 Para o MVP e para a evolução da plataforma, o Reachify adotará os seguintes serviços de terceiros como padrão inicial:
