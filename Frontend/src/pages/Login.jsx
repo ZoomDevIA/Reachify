@@ -122,12 +122,7 @@ function Login() {
                   {showPassword ? <HiEyeSlash size={18} /> : <HiEye size={18} />}
                 </button>
               </div>
-              <div className="password-strength" aria-hidden="true">
-                <span className={`password-strength__bar password-strength__bar--${passwordStrength.tone} ${passwordStrength.level >= 1 ? 'is-active' : ''}`} />
-                <span className={`password-strength__bar password-strength__bar--${passwordStrength.tone} ${passwordStrength.level >= 2 ? 'is-active' : ''}`} />
-                <span className={`password-strength__bar password-strength__bar--${passwordStrength.tone} ${passwordStrength.level >= 3 ? 'is-active' : ''}`} />
-              </div>
-              <span className={`form-helper form-helper--${passwordStrength.tone}`}>{passwordStrength.label}</span>
+
             </div>
 
             <div className="login-page__helper-row">
