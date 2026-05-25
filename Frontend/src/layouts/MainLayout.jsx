@@ -4,7 +4,11 @@ import Header from '../components/Header.jsx'
 function MainLayout() {
   const { pathname } = useLocation()
   const hideHeader =
-    pathname === '/' || pathname === '/cadastro' || pathname === '/login' || pathname === '/2fa'
+    pathname === '/' ||
+    pathname === '/cadastro' ||
+    pathname === '/login' ||
+    pathname === '/2fa' ||
+    pathname === '/dashboard'
 
   // Mantém o cabeçalho compartilhado entre as páginas iniciais do MVP.
   return (

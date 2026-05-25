@@ -402,6 +402,7 @@ final class AuthService
             'email_verified_at' => $user['email_verified_at'],
             'last_login_at' => $user['last_login_at'],
             'created_at' => $user['created_at'],
+            'onboarding_completed_at' => $user['onboarding_completed_at'],
         ];
     }
 

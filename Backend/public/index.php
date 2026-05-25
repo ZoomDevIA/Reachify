@@ -8,6 +8,7 @@ require_once dirname(__DIR__) . '/src/Response.php';
 require_once dirname(__DIR__) . '/src/Database.php';
 require_once dirname(__DIR__) . '/src/ResendMailer.php';
 require_once dirname(__DIR__) . '/src/AuthService.php';
+require_once dirname(__DIR__) . '/src/OnboardingService.php';
 
 Env::load(dirname(__DIR__) . '/.env');
 
@@ -28,7 +29,27 @@ try {
     $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
     $payload = readJsonPayload();
 
+    $scriptName = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+    $scriptDirectory = normalizePath((string) dirname($scriptName));
+    $path = normalizePath($path);
+
+    $shouldTrimScriptDirectory = $scriptName !== '' && str_ends_with($scriptName, '.php');
+
+    if ($shouldTrimScriptDirectory && $scriptDirectory !== '' && $scriptDirectory !== '/' && str_starts_with($path, $scriptDirectory)) {
+        $path = substr($path, strlen($scriptDirectory)) ?: '/';
+    }
+
+    if (str_starts_with($path, '/index.php')) {
+        $path = substr($path, strlen('/index.php')) ?: '/';
+    }
+
+    $apiPathPosition = strpos($path, '/api/');
+    if ($apiPathPosition !== false) {
+        $path = substr($path, $apiPathPosition) ?: '/';
+    }
+
     $authService = new AuthService(Database::connection(), new ResendMailer());
+    $onboardingService = new OnboardingService(Database::connection());
 
     if ($method === 'GET' && $path === '/api/health') {
         Response::success([
@@ -53,7 +74,25 @@ try {
         Response::success($authService->login($payload, $_SERVER));
     }
 
-    Response::error(404, 'route_not_found', 'A rota solicitada nao existe.');
+    if ($method === 'GET' && $path === '/api/onboarding') {
+        Response::success($onboardingService->getStatus($_SERVER));
+    }
+
+    if ($method === 'POST' && $path === '/api/onboarding') {
+        Response::success($onboardingService->save($payload, $_SERVER));
+    }
+
+    Response::error(404, 'route_not_found', 'A rota solicitada nao existe.', [
+        'debug' => [
+            'method' => $method,
+            'normalized_path' => $path,
+            'request_uri' => $_SERVER['REQUEST_URI'] ?? null,
+            'script_name' => $_SERVER['SCRIPT_NAME'] ?? null,
+            'php_self' => $_SERVER['PHP_SELF'] ?? null,
+            'path_info' => $_SERVER['PATH_INFO'] ?? null,
+            'document_root' => $_SERVER['DOCUMENT_ROOT'] ?? null,
+        ],
+    ]);
 } catch (ApiException $exception) {
     Response::error(
         $exception->status(),
@@ -92,4 +131,19 @@ function readJsonPayload(): array
     }
 
     return $decodedBody;
+}
+
+function normalizePath(string $path): string
+{
+    $normalizedPath = str_replace('\\', '/', $path);
+
+    if ($normalizedPath === '') {
+        return '/';
+    }
+
+    if ($normalizedPath[0] !== '/') {
+        $normalizedPath = '/' . $normalizedPath;
+    }
+
+    return rtrim($normalizedPath, '/') ?: '/';
 }

@@ -19,12 +19,21 @@ function TwoFactor() {
   const [resendCooldown, setResendCooldown] = useState(60)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const inputsRef = useRef([])
+  const redirectTimeoutRef = useRef(null)
   const email = location.state?.email ?? getPendingVerificationEmail() ?? ''
 
   const code = useMemo(() => digits.join(''), [digits])
 
   useEffect(() => {
     inputsRef.current[0]?.focus()
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        window.clearTimeout(redirectTimeoutRef.current)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -92,9 +101,9 @@ function TwoFactor() {
     try {
       await verifyEmailCode(email, code)
       setShowSuccessModal(true)
-      window.setTimeout(() => {
+      redirectTimeoutRef.current = window.setTimeout(() => {
         navigate('/dashboard')
-      }, 2000)
+      }, 3000)
     } catch (error) {
       setErrorMessage(error.message)
     } finally {
