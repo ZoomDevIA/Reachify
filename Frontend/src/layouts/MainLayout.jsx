@@ -8,7 +8,7 @@ function MainLayout() {
     pathname === '/cadastro' ||
     pathname === '/login' ||
     pathname === '/2fa' ||
-    pathname === '/dashboard'
+    pathname.startsWith('/dashboard')
 
   // Mantém o cabeçalho compartilhado entre as páginas iniciais do MVP.
   return (

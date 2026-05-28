@@ -4,39 +4,32 @@ import {
   HiBars3BottomLeft,
   HiBell,
   HiBolt,
+  HiCheck,
   HiChatBubbleBottomCenterText,
   HiChatBubbleLeftRight,
+  HiChevronLeft,
+  HiChevronRight,
   HiChevronDown,
   HiCog6Tooth,
   HiCreditCard,
   HiBuildingOffice2,
   HiCheckCircle,
+  HiEnvelope,
   HiLifebuoy,
+  HiLockClosed,
+  HiLockOpen,
   HiMagnifyingGlass,
   HiMegaphone,
   HiPaintBrush,
   HiPlus,
   HiSquares2X2,
   HiSparkles,
+  HiTag,
   HiUsers,
+  HiXMark,
 } from 'react-icons/hi2'
 import { fetchOnboardingStatus, getStoredUser, saveOnboardingProgress } from '../lib/auth.js'
-
-const sidebarPrimaryItems = [
-  { label: 'Conversas', icon: HiChatBubbleLeftRight, active: true },
-  { label: 'Contatos', icon: HiUsers },
-  { label: 'CRM', icon: HiSquares2X2 },
-  { label: 'Chatbots', icon: HiChatBubbleBottomCenterText },
-  { label: 'Agentes de IA', icon: HiBolt },
-  { label: 'Campanhas', icon: HiMegaphone },
-  { label: 'Relatorios', icon: HiArrowTrendingUp },
-  { label: 'Configuracoes', icon: HiCog6Tooth },
-]
-
-const sidebarSecondaryItems = [
-  { label: 'Notificacoes', icon: HiBell },
-  { label: 'Suporte', icon: HiLifebuoy },
-]
+import DashboardSidebar from '../components/DashboardSidebar.jsx'
 
 const conversationTabs = [
   { key: 'entrada', label: 'Entrada', count: 1 },
@@ -63,6 +56,16 @@ const conversationItems = [
     time: 'ha 18 min',
     unread: false,
   },
+]
+
+const bulkConversationActions = [
+  { value: 'finalizar', label: 'Finalizar conversas', icon: HiCheck },
+  { value: 'adicionar_etiqueta', label: 'Adicionar etiqueta', icon: HiTag },
+  { value: 'remover_etiqueta', label: 'Remover etiqueta', icon: HiTag },
+  { value: 'marcar_lida', label: 'Marcar como lida', icon: HiCheckCircle },
+  { value: 'marcar_nao_lida', label: 'Marcar como nao lida', icon: HiEnvelope },
+  { value: 'privar', label: 'Privar conversa', icon: HiLockClosed },
+  { value: 'liberar', label: 'Liberar conversa', icon: HiLockOpen },
 ]
 
 const onboardingGoalOptions = [
@@ -179,8 +182,19 @@ function resolveOnboardingPayload(form) {
 
 function Dashboard() {
   const [user, setUser] = useState(() => getStoredUser())
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    if (typeof window === 'undefined') {
+      return false
+    }
+
+    return window.innerWidth <= 1200
+  })
   const [activeTab, setActiveTab] = useState('entrada')
+  const [searchTerm, setSearchTerm] = useState('')
   const [selectedConversationId, setSelectedConversationId] = useState(null)
+  const [selectedConversationIds, setSelectedConversationIds] = useState([])
+  const [selectedBulkAction, setSelectedBulkAction] = useState('finalizar')
+  const [isBulkMenuOpen, setIsBulkMenuOpen] = useState(false)
   const [isOnboardingLoading, setIsOnboardingLoading] = useState(true)
   const [isOnboardingSaving, setIsOnboardingSaving] = useState(false)
   const [onboardingError, setOnboardingError] = useState('')
@@ -190,20 +204,37 @@ function Dashboard() {
   const [onboardingForm, setOnboardingForm] = useState(() => buildOnboardingFormState())
 
   const visibleConversations = useMemo(() => {
+    let conversations = []
+
     if (activeTab === 'entrada') {
-      return conversationItems.slice(0, 1)
+      conversations = conversationItems.slice(0, 1)
+    } else if (activeTab === 'esperando') {
+      conversations = conversationItems.slice(1)
     }
 
-    if (activeTab === 'esperando') {
-      return conversationItems.slice(1)
+    const normalizedSearch = searchTerm.trim().toLowerCase()
+
+    if (!normalizedSearch) {
+      return conversations
     }
 
-    return []
-  }, [activeTab])
+    return conversations.filter((conversation) =>
+      [conversation.title, conversation.preview, conversation.channel, conversation.queue]
+        .join(' ')
+        .toLowerCase()
+        .includes(normalizedSearch),
+    )
+  }, [activeTab, searchTerm])
 
   const selectedConversation = visibleConversations.find(
     (conversation) => conversation.id === selectedConversationId
   )
+  const selectedBulkActionOption =
+    bulkConversationActions.find((action) => action.value === selectedBulkAction) ||
+    bulkConversationActions[0]
+  const allVisibleSelected =
+    visibleConversations.length > 0 &&
+    visibleConversations.every((conversation) => selectedConversationIds.includes(conversation.id))
 
   const onboardingProgress = (onboardingStep / 3) * 100
 
@@ -251,6 +282,20 @@ function Dashboard() {
   }, [])
 
   useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth <= 720) {
+        setIsSidebarCollapsed(true)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!showOnboardingModal || isOnboardingLoading) {
       return
     }
@@ -283,6 +328,33 @@ function Dashboard() {
       ...current,
       [field]: value,
     }))
+  }
+
+  function toggleConversationSelection(conversationId) {
+    setSelectedConversationIds((current) =>
+      current.includes(conversationId)
+        ? current.filter((id) => id !== conversationId)
+        : [...current, conversationId],
+    )
+  }
+
+  function toggleAllVisibleConversations() {
+    setSelectedConversationIds((current) => {
+      if (allVisibleSelected) {
+        return current.filter(
+          (id) => !visibleConversations.some((conversation) => conversation.id === id),
+        )
+      }
+
+      const next = new Set(current)
+      visibleConversations.forEach((conversation) => next.add(conversation.id))
+      return Array.from(next)
+    })
+  }
+
+  function clearConversationSelection() {
+    setSelectedConversationIds([])
+    setIsBulkMenuOpen(false)
   }
 
   function validateOnboardingStep() {
@@ -507,7 +579,9 @@ function Dashboard() {
   }
 
   return (
-    <main className="reachify-dashboard">
+    <main
+      className={`reachify-dashboard ${isSidebarCollapsed ? 'is-sidebar-collapsed' : ''}`}
+    >
       {showOnboardingModal ? (
         <div className="reachify-onboarding">
           <div className="reachify-onboarding__dialog" role="dialog" aria-modal="true" aria-labelledby="reachify-onboarding-title">
@@ -559,67 +633,16 @@ function Dashboard() {
         </div>
       ) : null}
 
-      <aside className="reachify-dashboard__sidebar">
-        <div className="reachify-dashboard__brand">
-          <span className="reachify-dashboard__brand-mark">R</span>
-          <div>
-            <strong>Reachify</strong>
-            <span>CRM + Atendimento + IA</span>
-          </div>
-        </div>
-
-        <nav className="reachify-dashboard__nav">
-          {sidebarPrimaryItems.map((item) => {
-            const Icon = item.icon
-
-            return (
-              <button
-                key={item.label}
-                className={`reachify-dashboard__nav-item ${item.active ? 'is-active' : ''}`}
-                type="button"
-              >
-                <Icon size={20} />
-                <span>{item.label}</span>
-              </button>
-            )
-          })}
-        </nav>
-
-        <div className="reachify-dashboard__sidebar-footer">
-          {sidebarSecondaryItems.map((item) => {
-            const Icon = item.icon
-
-            return (
-              <button key={item.label} className="reachify-dashboard__nav-item" type="button">
-                <Icon size={20} />
-                <span>{item.label}</span>
-              </button>
-            )
-          })}
-
-          <div className="reachify-dashboard__profile">
-            <div className="reachify-dashboard__profile-avatar">
-              {(user?.email?.[0] ?? 'R').toUpperCase()}
-            </div>
-            <div>
-              <strong>{user?.email ?? 'Usuario Reachify'}</strong>
-              <span>Operacao ativa</span>
-            </div>
-            <HiChevronDown size={16} />
-          </div>
-        </div>
-      </aside>
+      <DashboardSidebar
+        user={user}
+        isCollapsed={isSidebarCollapsed}
+        onToggle={() => setIsSidebarCollapsed((current) => !current)}
+      />
 
       <section className="reachify-dashboard__inbox">
         <header className="reachify-dashboard__panel-header">
           <h1>Conversas</h1>
           <div className="reachify-dashboard__panel-actions">
-            <button type="button" aria-label="Listar">
-              <HiBars3BottomLeft size={20} />
-            </button>
-            <button type="button" aria-label="Cobrar">
-              <HiCreditCard size={20} />
-            </button>
             <button className="is-primary" type="button" aria-label="Nova conversa">
               <HiPlus size={22} />
             </button>
@@ -628,8 +651,79 @@ function Dashboard() {
 
         <div className="reachify-dashboard__search">
           <HiMagnifyingGlass size={18} />
-          <input type="text" placeholder="Buscar por nome ou telefone" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Buscar por nome ou telefone"
+          />
         </div>
+
+        {selectedConversationIds.length > 0 ? (
+          <div className="reachify-dashboard__bulk-panel">
+            <div className="reachify-dashboard__bulk-head">
+              <label className="reachify-dashboard__bulk-check">
+                <input
+                  type="checkbox"
+                  checked={allVisibleSelected}
+                  onChange={toggleAllVisibleConversations}
+                />
+              </label>
+              <strong>Selecione uma conversa</strong>
+              <button
+                className="reachify-dashboard__bulk-close"
+                type="button"
+                onClick={clearConversationSelection}
+                aria-label="Fechar selecao"
+              >
+                <HiXMark size={18} />
+              </button>
+            </div>
+
+            <div className="reachify-dashboard__bulk-bar">
+              <div className="reachify-dashboard__bulk-select">
+                <button
+                  className="reachify-dashboard__bulk-select-button"
+                  type="button"
+                  onClick={() => setIsBulkMenuOpen((current) => !current)}
+                >
+                  <span>
+                    <HiCheck size={16} />
+                    {selectedBulkActionOption.label}
+                  </span>
+                  <HiChevronDown size={16} />
+                </button>
+
+                {isBulkMenuOpen ? (
+                  <div className="reachify-dashboard__bulk-dropdown">
+                    {bulkConversationActions.map((action) => {
+                      const Icon = action.icon
+
+                      return (
+                        <button
+                          key={action.value}
+                          type="button"
+                          className={selectedBulkAction === action.value ? 'is-selected' : ''}
+                          onClick={() => {
+                            setSelectedBulkAction(action.value)
+                            setIsBulkMenuOpen(false)
+                          }}
+                        >
+                          <Icon size={16} />
+                          <span>{action.label}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
+
+              <button className="reachify-dashboard__bulk-apply" type="button">
+                Aplicar
+              </button>
+            </div>
+          </div>
+        ) : null}
 
         <div className="reachify-dashboard__tabs">
           {conversationTabs.map((tab) => (
@@ -640,6 +734,8 @@ function Dashboard() {
               onClick={() => {
                 setActiveTab(tab.key)
                 setSelectedConversationId(null)
+                setSelectedConversationIds([])
+                setIsBulkMenuOpen(false)
               }}
             >
               <span>{tab.label}</span>
@@ -668,6 +764,16 @@ function Dashboard() {
               type="button"
               onClick={() => setSelectedConversationId(conversation.id)}
             >
+              <label
+                className="reachify-dashboard__conversation-check"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedConversationIds.includes(conversation.id)}
+                  onChange={() => toggleConversationSelection(conversation.id)}
+                />
+              </label>
               <div className="reachify-dashboard__conversation-avatar">AI</div>
               <div className="reachify-dashboard__conversation-content">
                 <div className="reachify-dashboard__conversation-top">

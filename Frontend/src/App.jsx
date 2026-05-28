@@ -3,6 +3,7 @@ import RequireAuth from './components/RequireAuth.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 import Cadastro from './pages/Cadastro.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import DashboardContacts from './pages/DashboardContacts.jsx'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import TwoFactor from './pages/TwoFactor.jsx'
@@ -24,6 +25,15 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/dashboard/contatos"
+          element={
+            <RequireAuth>
+              <DashboardContacts />
+            </RequireAuth>
+          }
+        />
+        <Route path="/dashboard/contato" element={<Navigate to="/dashboard/contatos" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
