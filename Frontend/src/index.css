@@ -2677,6 +2677,7 @@ img {
 
 .reachify-dashboard__sidebar-footer {
     margin-top: auto;
+    padding-top: 8px;
 }
 
 .reachify-dashboard__nav-item {
@@ -2691,6 +2692,11 @@ img {
     color: var(--color-white-100);
     font-size: 1rem;
     text-align: left;
+}
+
+.reachify-dashboard__logout {
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .reachify-dashboard__nav-item svg {
@@ -2709,6 +2715,11 @@ img {
     gap: 12px;
     margin-top: 18px;
     padding: 10px 8px;
+    min-width: 0;
+}
+
+.reachify-dashboard__profile-copy {
+    min-width: 0;
 }
 
 .reachify-dashboard.is-sidebar-collapsed {
@@ -2804,6 +2815,21 @@ img {
 .reachify-dashboard__profile-avatar {
     background: linear-gradient(135deg, #ffb774, #ff7e79);
     color: var(--color-white-100);
+}
+
+.reachify-dashboard__profile strong {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reachify-dashboard__profile span {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .reachify-dashboard__inbox {

@@ -1,5 +1,6 @@
 import {
   HiArrowTrendingUp,
+  HiArrowRightOnRectangle,
   HiBell,
   HiBolt,
   HiChatBubbleBottomCenterText,
@@ -13,7 +14,8 @@ import {
   HiSquares2X2,
   HiUsers,
 } from 'react-icons/hi2'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { clearStoredSession } from '../lib/auth.js'
 
 const primaryNavigationItems = [
   { label: 'Conversas', icon: HiChatBubbleLeftRight, to: '/dashboard', end: true },
@@ -32,6 +34,13 @@ const secondaryNavigationItems = [
 ]
 
 function DashboardSidebar({ user, isCollapsed, onToggle }) {
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    clearStoredSession()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <aside className="reachify-dashboard__sidebar">
       <div className="reachify-dashboard__brand">
@@ -103,12 +112,25 @@ function DashboardSidebar({ user, isCollapsed, onToggle }) {
           )
         })}
 
+        <button
+          className="reachify-dashboard__nav-item reachify-dashboard__logout"
+          type="button"
+          onClick={handleLogout}
+          data-tooltip="Logout"
+          aria-label="Logout"
+        >
+          <HiArrowRightOnRectangle size={20} />
+          <span>Sair</span>
+        </button>
+
         <div className="reachify-dashboard__profile">
           <div className="reachify-dashboard__profile-avatar">
             {(user?.email?.[0] ?? 'R').toUpperCase()}
           </div>
-          <div>
-            <strong>{user?.email ?? 'Usuario Reachify'}</strong>
+          <div className="reachify-dashboard__profile-copy">
+            <strong title={user?.email ?? 'Usuario Reachify'}>
+              {user?.email ?? 'Usuario Reachify'}
+            </strong>
             <span>Operacao ativa</span>
           </div>
           <HiChevronDown size={16} />
