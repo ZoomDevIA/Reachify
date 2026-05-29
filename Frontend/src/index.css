@@ -2620,6 +2620,734 @@ img {
     z-index: 6;
 }
 
+/* INICIO CSS PAGINAS PERFIL E CHATBOTS */
+
+.reachify-profile,
+.reachify-chatbots {
+    background: #eef4ff;
+    height: 100vh;
+    overflow-y: auto;
+    grid-column: 2 / 4;
+    width: 100%;
+    min-width: 0;
+}
+
+.reachify-profile__body,
+.reachify-chatbots__body,
+.reachify-chatbots__editor-page {
+    min-height: 100%;
+    width: 100%;
+    min-width: 0;
+    padding: 32px 36px;
+}
+
+.reachify-profile__page-head,
+.reachify-chatbots__page-head {
+    margin-bottom: 24px;
+}
+
+.reachify-profile__page-head h1,
+.reachify-chatbots__page-head h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+    letter-spacing: -0.04em;
+}
+
+.reachify-profile__page-head p,
+.reachify-chatbots__page-head p {
+    margin: 0;
+    color: var(--color-gray-600);
+    font-size: 1.02rem;
+}
+
+.reachify-profile__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+    gap: 28px;
+    align-items: start;
+    width: 100%;
+}
+
+.reachify-profile__card,
+.reachify-chatbots__empty-card,
+.reachify-chatbots__banner {
+    border-radius: 24px;
+    background: var(--color-white-100);
+    box-shadow: 0 18px 44px rgba(11, 15, 20, 0.08);
+    border: 1px solid rgba(27, 36, 48, 0.06);
+}
+
+.reachify-profile__card {
+    padding: 28px 30px;
+}
+
+.reachify-profile__card-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.reachify-profile__card-head h2 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.reachify-profile__card-head p {
+    margin: 8px 0 0;
+    color: var(--color-gray-600);
+    line-height: 1.7;
+}
+
+.reachify-profile__hero {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.reachify-profile__avatar-wrap {
+    position: relative;
+    width: fit-content;
+}
+
+.reachify-profile__avatar {
+    width: 128px;
+    height: 128px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #69d4df, #23b3bb);
+    color: var(--color-white-100);
+    font-size: 2.3rem;
+    font-weight: 800;
+}
+
+.reachify-profile__avatar-action {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-white-100);
+    border: 1px solid rgba(27, 36, 48, 0.12);
+    color: var(--color-black-700);
+    box-shadow: 0 10px 24px rgba(11, 15, 20, 0.12);
+}
+
+.reachify-profile__hero-copy strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.6rem;
+    letter-spacing: -0.04em;
+}
+
+.reachify-profile__hero-copy span {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--color-black-700);
+    font-weight: 700;
+}
+
+.reachify-profile__hero-copy p {
+    margin: 0;
+    color: var(--color-gray-600);
+    line-height: 1.7;
+}
+
+.reachify-profile__form-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.reachify-profile__field {
+    display: grid;
+    gap: 8px;
+}
+
+.reachify-profile__field span,
+.reachify-profile__toggle-row strong {
+    color: var(--color-black-900);
+    font-weight: 700;
+}
+
+.reachify-profile__field input,
+.reachify-profile__field textarea,
+.reachify-chatbots__node input,
+.reachify-chatbots__node textarea,
+.reachify-chatbots__select {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(27, 36, 48, 0.14);
+    background: var(--color-white-100);
+    color: var(--color-black-900);
+    font-size: 1rem;
+}
+
+.reachify-profile__field textarea,
+.reachify-chatbots__node textarea {
+    min-height: 128px;
+    padding: 16px;
+    resize: vertical;
+}
+
+.reachify-profile__input-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(27, 36, 48, 0.14);
+    background: var(--color-white-100);
+}
+
+.reachify-profile__input-icon svg {
+    color: var(--color-gray-400);
+}
+
+.reachify-profile__input-icon input {
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.reachify-profile__toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reachify-profile__switch {
+    width: 44px;
+    height: 24px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    border-radius: 999px;
+    background: rgba(138, 148, 166, 0.4);
+    transition: background-color 0.2s ease;
+}
+
+.reachify-profile__switch span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-white-100);
+    transition: transform 0.2s ease;
+}
+
+.reachify-profile__switch.is-active {
+    background: linear-gradient(135deg, var(--color-blue-900), var(--color-blue-500));
+}
+
+.reachify-profile__switch.is-active span {
+    transform: translateX(20px);
+}
+
+.reachify-profile__info {
+    display: flex;
+    align-items: start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(63, 124, 255, 0.12);
+    color: var(--color-black-700);
+}
+
+.reachify-profile__info svg {
+    flex-shrink: 0;
+    color: var(--color-blue-900);
+}
+
+.reachify-profile__card--tokens {
+    display: grid;
+    align-content: start;
+    min-height: 625px;
+}
+
+.reachify-profile__token-button,
+.reachify-chatbots__empty-actions button,
+.reachify-chatbots__banner-copy button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #6b88ff, #5079e6);
+    color: var(--color-white-100);
+    font-weight: 700;
+    box-shadow: 0 12px 24px rgba(80, 121, 230, 0.2);
+}
+
+.reachify-profile__tokens-empty {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    gap: 20px;
+    padding: 28px 0 10px;
+    text-align: center;
+}
+
+.reachify-profile__tokens-illustration {
+    position: relative;
+    width: 220px;
+    height: 220px;
+}
+
+.reachify-profile__token-sheet {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 130px;
+    height: 130px;
+    border-radius: 20px;
+    background: var(--color-white-100);
+    border: 1px dashed rgba(27, 36, 48, 0.14);
+    box-shadow: 0 16px 30px rgba(11, 15, 20, 0.08);
+}
+
+.reachify-profile__token-sheet--back {
+    transform: rotate(-12deg) translateX(-10px) translateY(12px);
+}
+
+.reachify-profile__token-sheet--front {
+    display: grid;
+    place-items: center;
+}
+
+.reachify-profile__token-plus {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6b88ff, #5079e6);
+    color: var(--color-white-100);
+}
+
+.reachify-profile__token-list {
+    display: grid;
+    gap: 14px;
+}
+
+.reachify-profile__token-item {
+    display: grid;
+    gap: 6px;
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(238, 244, 255, 0.9);
+}
+
+.reachify-profile__token-item strong {
+    font-size: 1rem;
+}
+
+.reachify-profile__token-item span {
+    color: var(--color-black-700);
+    word-break: break-all;
+}
+
+.reachify-profile__token-item small {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-gray-600);
+}
+
+.reachify-chatbots__banner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: start;
+    padding: 24px 26px;
+    margin-bottom: 22px;
+    background: rgba(63, 124, 255, 0.12);
+}
+
+.reachify-chatbots__banner-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.6);
+    color: #5d7bf0;
+}
+
+.reachify-chatbots__banner-copy strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+
+.reachify-chatbots__banner-copy p {
+    margin: 0 0 16px;
+    color: var(--color-black-700);
+    line-height: 1.7;
+}
+
+.reachify-chatbots__banner-close {
+    background: transparent;
+    color: var(--color-black-700);
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.reachify-chatbots__empty-card {
+    min-height: 460px;
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    gap: 24px;
+    padding: 38px 34px 32px;
+    width: 100%;
+}
+
+.reachify-chatbots__empty-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.reachify-chatbots__empty-illustration {
+    position: relative;
+    width: 240px;
+    height: 220px;
+    margin-top: 18px;
+}
+
+.reachify-chatbots__sheet {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 140px;
+    height: 140px;
+    border-radius: 24px;
+    background: var(--color-white-100);
+    border: 1px dashed rgba(27, 36, 48, 0.14);
+    box-shadow: 0 16px 30px rgba(11, 15, 20, 0.08);
+}
+
+.reachify-chatbots__sheet--back {
+    transform: rotate(-14deg) translateX(-8px) translateY(10px);
+}
+
+.reachify-chatbots__sheet--front {
+    display: grid;
+    place-items: center;
+}
+
+.reachify-chatbots__sheet-plus {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6b88ff, #5079e6);
+    color: var(--color-white-100);
+}
+
+.reachify-chatbots__empty-card strong {
+    font-size: 1.7rem;
+    letter-spacing: -0.04em;
+}
+
+.reachify-chatbots__editor-page {
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.reachify-chatbots__editor-topbar,
+.reachify-chatbots__editor-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 24px;
+    background: var(--color-white-100);
+    border-bottom: 1px solid rgba(27, 36, 48, 0.08);
+    position: sticky;
+    z-index: 4;
+}
+
+.reachify-chatbots__editor-topbar {
+    top: 0;
+}
+
+.reachify-chatbots__editor-toolbar {
+    top: 77px;
+}
+
+.reachify-chatbots__editor-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-gray-600);
+}
+
+.reachify-chatbots__editor-breadcrumbs a {
+    color: var(--color-black-700);
+    font-weight: 600;
+}
+
+.reachify-chatbots__editor-search {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-black-700);
+}
+
+.reachify-chatbots__editor-toolbar-left,
+.reachify-chatbots__editor-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reachify-chatbots__editor-toolbar-left button,
+.reachify-chatbots__canvas-controls button {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-white-100);
+    border: 1px solid rgba(27, 36, 48, 0.12);
+    color: var(--color-black-700);
+}
+
+.reachify-chatbots__editor-toolbar-left button.is-primary {
+    background: linear-gradient(135deg, var(--color-blue-900), var(--color-blue-500));
+    color: var(--color-white-100);
+    border-color: transparent;
+}
+
+.reachify-chatbots__editor-toolbar-left button.is-active-tool {
+    background: rgba(25, 135, 84, 0.12);
+    color: var(--color-blue-900);
+    border-color: rgba(25, 135, 84, 0.22);
+}
+
+.reachify-chatbots__editor-status {
+    color: #e39a14;
+    font-weight: 700;
+}
+
+.reachify-chatbots__editor-flow-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-black-700);
+}
+
+.reachify-chatbots__canvas {
+    position: relative;
+    min-height: 0;
+    height: 100%;
+    overflow: auto;
+    background-color: #eef4ff;
+    background-image: radial-gradient(rgba(80, 121, 230, 0.15) 1px, transparent 1px);
+    background-size: 14px 14px;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: default;
+}
+
+.reachify-chatbots__canvas::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.reachify-chatbots__canvas.is-pan-mode {
+    cursor: grab;
+}
+
+.reachify-chatbots__canvas.is-panning {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.reachify-chatbots__canvas-surface {
+    position: relative;
+    width: 1600px;
+    min-width: 1600px;
+    height: 1200px;
+    min-height: 1200px;
+}
+
+.reachify-chatbots__connections {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.reachify-chatbots__connections path {
+    fill: none;
+    stroke: rgba(85, 96, 112, 0.8);
+    stroke-width: 4;
+    stroke-linecap: round;
+}
+
+.reachify-chatbots__node {
+    position: absolute;
+    width: 246px;
+    padding: 18px 18px 16px;
+    border-radius: 20px;
+    background: var(--color-white-100);
+    box-shadow: 0 18px 40px rgba(11, 15, 20, 0.12);
+}
+
+.reachify-chatbots__node header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.reachify-chatbots__node header strong {
+    font-size: 1rem;
+}
+
+.reachify-chatbots__node p,
+.reachify-chatbots__node label span,
+.reachify-chatbots__warning,
+.reachify-chatbots__advanced {
+    color: var(--color-black-700);
+}
+
+.reachify-chatbots__node p {
+    margin: 0 0 14px;
+    line-height: 1.6;
+}
+
+.reachify-chatbots__select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reachify-chatbots__warning {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(255, 232, 180, 0.6);
+    font-size: 0.92rem;
+}
+
+.reachify-chatbots__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 12px;
+    background: transparent;
+    color: var(--color-black-700);
+}
+
+.reachify-chatbots__toggle span {
+    width: 42px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgba(138, 148, 166, 0.42);
+    position: relative;
+}
+
+.reachify-chatbots__toggle span::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-white-100);
+    transition: transform 0.2s ease;
+}
+
+.reachify-chatbots__toggle.is-active span {
+    background: linear-gradient(135deg, var(--color-blue-900), var(--color-blue-500));
+}
+
+.reachify-chatbots__toggle.is-active span::after {
+    transform: translateX(18px);
+}
+
+.reachify-chatbots__advanced {
+    font-weight: 700;
+}
+
+.reachify-chatbots__node-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.reachify-chatbots__node-toolbar div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-black-700);
+}
+
+.reachify-chatbots__node-handle {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6b88ff, #5079e6);
+}
+
+.reachify-chatbots__node-handle--out {
+    left: 16px;
+    bottom: -9px;
+}
+
+.reachify-chatbots__node-handle--in {
+    left: -9px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.reachify-chatbots__node-handle--out.is-gray {
+    left: auto;
+    right: -9px;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    background: rgba(138, 148, 166, 0.9);
+}
+
+.reachify-chatbots__canvas-controls {
+    position: absolute;
+    right: 28px;
+    bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* FIM CSS PAGINAS PERFIL E CHATBOTS */
+
 .reachify-dashboard__brand {
     display: flex;
     align-items: center;

@@ -3,7 +3,10 @@ import RequireAuth from './components/RequireAuth.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 import Cadastro from './pages/Cadastro.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import DashboardChatbotEditor from './pages/DashboardChatbotEditor.jsx'
+import DashboardChatbots from './pages/DashboardChatbots.jsx'
 import DashboardContacts from './pages/DashboardContacts.jsx'
+import DashboardProfile from './pages/DashboardProfile.jsx'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import TwoFactor from './pages/TwoFactor.jsx'
@@ -30,6 +33,30 @@ function App() {
           element={
             <RequireAuth>
               <DashboardContacts />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard/perfil"
+          element={
+            <RequireAuth>
+              <DashboardProfile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard/chatbots"
+          element={
+            <RequireAuth>
+              <DashboardChatbots />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/dashboard/chatbots/editor"
+          element={
+            <RequireAuth>
+              <DashboardChatbotEditor />
             </RequireAuth>
           }
         />

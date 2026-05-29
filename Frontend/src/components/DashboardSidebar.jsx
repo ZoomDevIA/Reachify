@@ -29,7 +29,7 @@ const primaryNavigationItems = [
   { label: 'Conversas', icon: HiChatBubbleLeftRight, to: '/dashboard', end: true },
   { label: 'Contatos', icon: HiUsers, to: '/dashboard/contatos' },
   { label: 'CRM', icon: HiSquares2X2 },
-  { label: 'Chatbots', icon: HiChatBubbleBottomCenterText },
+  { label: 'Chatbots', icon: HiChatBubbleBottomCenterText, to: '/dashboard/chatbots' },
   { label: 'Agentes de IA', icon: HiBolt },
   { label: 'Campanhas', icon: HiMegaphone },
   { label: 'Relatorios', icon: HiArrowTrendingUp },
@@ -92,6 +92,11 @@ function DashboardSidebar({ user, isCollapsed, onToggle }) {
     clearStoredSession()
     setIsProfileMenuOpen(false)
     navigate('/login', { replace: true })
+  }
+
+  function openProfilePage() {
+    setIsProfileMenuOpen(false)
+    navigate('/dashboard/perfil')
   }
 
   function renderPreferenceToggle(options, activeValue, onChange) {
@@ -236,7 +241,7 @@ function DashboardSidebar({ user, isCollapsed, onToggle }) {
               {activeProfileTab === 'account' ? (
                 <>
                   <div className="reachify-dashboard__profile-card-section">
-                    <button type="button">
+                    <button type="button" onClick={openProfilePage}>
                       <HiUser size={18} />
                       <span>Meu perfil</span>
                     </button>
